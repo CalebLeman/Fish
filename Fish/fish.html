@@ -55,14 +55,14 @@ setInterval(function(){
 	powerUp.noBounds = true;
 	powerUp.moveTo(x, y); 
 	powerUp.friction = .2;
-}, 5000);
+}, 1000);
 
 sjs.onHit("powerUp","bottom_screen",function(x,y){
 	x.destroy();
 }); 
 
 sjs.onHit("player","powerUp",function(x,y){
-	x.grow(30,30); 
+	x.grow(15,15); 
 	setTimeout(function(){
 	}, 4000);
 	y.destroy();
@@ -71,7 +71,7 @@ sjs.onHit("player","powerUp",function(x,y){
 //Enemies
 
 setInterval(function(){
-var speed = Math.round(1 + Math.random()*10);  
+var speed = Math.floor(1 + Math.random()*10);  
 	if(Math.random() > 0.5){
 		var enemy = new sjs.Image("Images/work.jpg"); 
  		enemy.type = "enemy";
@@ -81,24 +81,61 @@ var speed = Math.round(1 + Math.random()*10);
 		enemy.pushRight(speed); 
 		enemy.scaleSize(.5 + Math.random() * 1.2);
 		enemy.moveTo(-enemy.getWidth(), Math.random()*(enemy.getClamp().y));
-	}	
+	} else { 
+var enemy = new sjs.Image("Images/work.jpg");
+
+	enemy.type = "enemy";
+	enemy.setSize(100,50);
+	enemy.noBounds = true;
+	enemy.friction = 0;
+	enemy.pushLeft(speed); 
+	enemy.scaleSize(.5 + Math.random() * 1.2);
+	enemy.moveTo(sjs.getWidth(), Math.random()*
+		(enemy.getClamp().y)); 
+
+
+
+	}
 },1000);
 
 sjs.left_screen.offset(-500); 
+sjs.right_screen.offset(500);
+
+sjs.onHit("enemy",["right_screen","left_screen"], function(x,y){
+
+		x.destroy();
+
+}); 
 
 
 
 
+sjs.onHit("player","enemy", function(){
+	window.location = "lost.html";
 
 
 
 
+});
+
+//score
+
+
+var score = 0;
+var score_txt = new sjs.Text("Score:", 21, "orange");
+
+
+setInterval(function(){ 
+score = score + 1;
+score_txt.setText("Score: "+score);
+}, 1000);
 
 
 } //end start
 </script>
 </head>
-<body onload="start()">
+<body onload="start()" style="background-image: url(Images/rt.jpg);">
+
 <h1> The Office </h1>
 
 <div id="target" style="margin:auto;background:grey;"></div>
